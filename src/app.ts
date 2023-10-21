@@ -23,14 +23,18 @@ const connectedUsers = new Map();
 io.on('connection', (socket)=>{
     socket.on('authenticate', (userId: string)=>{
         connectedUsers.set(userId, socket);
+        console.log(userId);
     });
     socket.on('private_message', (data: {senderId: string, receiverId: string, message: string})=>{
         const {senderId, receiverId, message}=data;
 
         const senderSocket = connectedUsers.get(senderId);
+        console.log(senderSocket.id)
         const receiverSocket = connectedUsers.get(receiverId);
-        console.log(senderSocket)
-        console.log(receiverSocket)
+        // console.log(senderSocket)
+        // console.log(receiverSocket)
+        // console.log(senderSocket)
+        // console.log(receiverSocket)
         // console.log(senderId, receiverId)
         // console.log(message);
         if(senderSocket && receiverSocket){
