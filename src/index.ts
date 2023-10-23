@@ -1,8 +1,7 @@
 import app from "./app";
-
 import { connectToDB } from "./config/db";
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at port ${process.env.PORT}`);
+app.listen(8080, () => {
+  console.log("Server running at http://localhost:8080");
   connectToDB();
 });
