@@ -1,22 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-interface IUser extends Document {
-  username: string;
-  email: string;
-  password: string;
-  picture?: string;
-  isVerified?: boolean;
-  isAdmin?: boolean;
-  forgotPasswordToken?: String;
-  forgotPasswordTokenExpiry?: Date;
-  verifyToken?: String;
-  verifyTokenExpiry?: Date;
-
-  // Define the custom method
-  matchPassword(enteredPassword: string): Promise<boolean>;
-}
-
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -68,7 +52,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.methods.matchPassword = async function (enteredPassword: string) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -81,7 +65,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User: Model<IUser & mongoose.Document> =
-  mongoose.models.User || mongoose.model<IUser>("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

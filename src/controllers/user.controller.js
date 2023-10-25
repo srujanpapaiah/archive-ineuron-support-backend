@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
 import userService from "../services/user";
 import generateToken from "../config/generateToken";
 
-const signup = async (req: Request, res: Response) => {
+const signup = async (req, res) => {
   const { username, email, password } = req.body;
   const user = await userService.signup(username, email, password);
   return res.status(201).json({
@@ -17,7 +16,7 @@ const signup = async (req: Request, res: Response) => {
   });
 };
 
-const login = async (req: Request, res: Response) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await userService.login(email, password);
@@ -30,7 +29,12 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
-export default module.exports = {
-  signup,
-  login,
+const allUsers = async (req, res) => {
+  const users = await userService.allUsers(req);
+  return res.status(200).json({
+    status: "ok",
+    users,
+  });
 };
+
+export { signup, login, allUsers };

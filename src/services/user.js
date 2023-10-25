@@ -1,6 +1,7 @@
 import User from "../model/user-model";
+import { Request } from "express";
 
-const signup = async (username: string, email: string, password: string) => {
+const signup = async (username, email, password) => {
   const userExists = await User.findOne({ email: email });
 
   if (userExists) {
@@ -20,7 +21,7 @@ const signup = async (username: string, email: string, password: string) => {
   return savedUser;
 };
 
-const login = async (email: string, password: string) => {
+export const login = async (email, password) => {
   const user = await User.findOne({ email });
 
   if (user) {
@@ -33,7 +34,24 @@ const login = async (email: string, password: string) => {
   throw new Error("Email or password is wrong");
 };
 
+export const allUsers = async (req) => {
+  const user = req.body.user._id.toString();
+
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { username: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const users = await User.find(keyword).find({ _id: { $ne: user } });
+
+  return users;
+};
+
 export default module.exports = {
   signup,
   login,
+  allUsers,
 };
