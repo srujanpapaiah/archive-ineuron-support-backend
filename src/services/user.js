@@ -35,7 +35,7 @@ export const login = async (email, password) => {
 };
 
 export const allUsers = async (req) => {
-  const user = req.body.user._id.toString();
+  const user = req.user._id.toString();
 
   const keyword = req.query.search
     ? {
@@ -50,8 +50,17 @@ export const allUsers = async (req) => {
   return users;
 };
 
+export const me = async (req) => {
+  const userId = req.user._id.toString();
+  const response = await User.findOne({ _id: userId }).select(
+    "-password -isAdmin"
+  );
+  return response;
+};
+
 export default module.exports = {
   signup,
   login,
   allUsers,
+  me,
 };

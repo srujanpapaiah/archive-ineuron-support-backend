@@ -1,5 +1,7 @@
 import Chat from "../model/chat-model";
 import User from "../model/user-model";
+import Message from "../model/message-model";
+
 import mongoose from "mongoose";
 
 // export const accessChatService = async (userID: string, senderId: string) => {

@@ -9,9 +9,8 @@ import {
 
 export const accesChat = async (req, res) => {
   const { senderId } = req.body;
-  console.log(senderId);
 
-  const userID = req.body.user._id?.toString();
+  const userID = req.user._id?.toString();
 
   const response = await accessChatService(userID, senderId);
   return res.json({
@@ -20,7 +19,7 @@ export const accesChat = async (req, res) => {
 };
 
 export const fetchChats = async (req, res) => {
-  const userID = req.body.user._id?.toString();
+  const userID = req.user._id?.toString();
 
   const response = await fetchChatsService(userID);
 
@@ -28,7 +27,7 @@ export const fetchChats = async (req, res) => {
 };
 
 export const createRoom = async (req, res) => {
-  const userID = req.body.user._id?.toString();
+  const userID = req.user._id?.toString();
 
   if (!req.body.users || !req.body.roomName) {
     return res.status(400).send({ message: "Please fill all the fields" });
@@ -49,7 +48,7 @@ export const createRoom = async (req, res) => {
 };
 
 export const renameRoom = async (req, res) => {
-  const userID = req.body.user._id?.toString();
+  const userID = req.user._id?.toString();
 
   const { chatId, chatName } = req.body;
 
